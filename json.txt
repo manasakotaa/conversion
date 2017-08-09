@@ -1,0 +1,30 @@
+import os
+import sys
+import psycopg2
+import time
+import random
+conn = psycopg2.connect(database="irsdb", user="dealwallet", password="infotech369", host="localhost", port="5432")
+#conn = psycopg2.connect(database="irsdb",user="postgres",password="vasu",host="localhost",port="5432")
+print "Opened database successfully"
+
+cur = conn.cursor()
+
+#CREATE A TABLE branch_details
+
+cur.execute('''create table if not exists branch (id integer PRIMARY KEY,branch_name character varying(30) NOT NULL,branch_code character varying(8) NOT NULL,status character varying(10) NOT NULL,create_date timestamp without time zone,modified_date timestamp without time zone,client_id bigint,no_of_floors bigint);''')
+conn.commit()
+print "branch_details table created successfully in database bigdata with owner postgres"
+
+date=['2016-09-17 07:00:35.64','2016-09-17 07:15:27.803','2016-09-17 07:47:38.936','2016-09-09 22:04:45.625','2016-09-08 22:04:45.625','2016-09-09 22:04:45.625']
+status=['active','unactive']
+branch=['challapalli','guntur','avanigadda','vijayawada','amerepet','secunderabad']
+#INSERT VALUES INTO ALL COLUMNS
+print "INSERTING THE VALUES INTO THE POSTGRES TABLE branch_details"
+for i in range(1,100):
+   j=random.randint(1,5)
+   l=random.choice(branch)
+   k=random.choice(date)
+   m=random.choice(status)
+   cur.execute('''INSERT INTO branch VALUES ('%s', '%s', 'CH52%s', '%s', '%s', '%s', NULL, '%s')''' %(i,l,i,m,k,k,j))
+   conn.commit()
+print "values successfully inserted in branch_details"
